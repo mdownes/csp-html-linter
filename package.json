@@ -13,6 +13,7 @@
   },
   "files": [
     "index.js",
+    "selectors.js",
     "package.json"
   ],
   "repository": {
