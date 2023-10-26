@@ -1,14 +1,14 @@
 ### csp-html-linter
-A package to lint html for Content Security Policy Violations.
+A tool designed to analyze HTML and identify potential breaches of Content Security Policy (CSP) rules. The goal is to prevent CSP violations from infiltrating your codebase during the build process.  
 By default it throws errors if it finds any usage of:
 * inline Styles
     * ```<div style="color:blue;"></div>```
-* inline javascript
-    * ```JavaScript:void(0)```
-    * ```onclick="doSomething"```
-* Style tags without a nonce
+* inline javascript similar to:  
+    * ```javascript:void(0)```
+    * ```onclick="doSomething()"```
+* Style tags without a nonce attribute
     * ```<style></style>```
-* Script tags without a nonce
+* Script tags without a nonce attribute
     * ```<script></script>```
 
 
