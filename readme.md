@@ -22,7 +22,7 @@ Using npm:
 
 Import the plugin and call parse() passing the code
 
-```
+```javascript
 const cspHtmlLinter = require('csp-html-linter');
 
 const violations = cspHtmlLinter.parse(code);
