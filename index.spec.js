@@ -52,13 +52,10 @@ describe('cspHtmlLinter', () => {
       </html>
     `;
     let selectors = { ...inlineJSSelectors, ...inlineScriptTagRequiresNonceSelectors, ...inlineStylesTagRequiresNonceSelectors, ...inlineStylesSelectors };
-    const options = {
-      include: '**/*.html',
-      exclude: 'exclude.html',
-    };
+
     const code = inputHTML;
 
-    const violations = cspHtmlLinter.parse(code, options);
+    const violations = cspHtmlLinter.parse(code);
 
     const expectedErrorMessage = `${selectors['[style]']}
 ${selectors['style:not([nonce])']}
@@ -164,8 +161,6 @@ ${selectors['[onafterprint]']}`;
     `;
 
     const options = {
-      include: '**/*.html',
-      exclude: 'exclude.html',
       allowInlineJs: true
     };
     const code = inputHTML;
@@ -191,8 +186,6 @@ ${selectors['[onafterprint]']}`;
     `;
 
     const options = {
-      include: '**/*.html',
-      exclude: 'exclude.html',
       allowStyleTagWithoutNonce: true
     };
     const code = inputHTML;
@@ -214,8 +207,6 @@ ${selectors['[onafterprint]']}`;
     `;
 
     const options = {
-      include: '**/*.html',
-      exclude: 'exclude.html',
       allowScriptTagWithoutNonce: true
     };
     const code = inputHTML;
@@ -237,14 +228,10 @@ ${selectors['[onafterprint]']}`;
         </body>
       </html>
     `;
-    const options = {
-      include: '**/*.html',
-      exclude: 'exclude.html',
-    };
 
     const code = validHTML;
 
-    const violations = cspHtmlLinter.parse(code, options);
+    const violations = cspHtmlLinter.parse(code);
 
     expect(violations.length).to.equal(0);
   });

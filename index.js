@@ -4,6 +4,7 @@ const { JSDOM } = jsdom;
 const { inlineStylesSelectors, inlineJSSelectors, inlineStylesTagRequiresNonceSelectors, inlineScriptTagRequiresNonceSelectors } = require('./selectors');
 
 const parse = function parse(code, options) {
+  options = options || {};
   let violations = [];
   const selectors = getSelectors(options);
   const dom = new JSDOM(code);
@@ -17,7 +18,7 @@ const parse = function parse(code, options) {
 };
 
 function getSelectors(options) {
-
+  console.log(options);
   const allowInlineStyles = typeof options.allowInlineStyles !== 'undefined' ? options.allowInlineStyles : false;
   const allowInlineJs = typeof options.allowInlineJs !== 'undefined' ? options.allowInlineJs : false;
   const allowStyleTagWithoutNonce = typeof options.allowStyleTagWithoutNonce !== 'undefined' ? options.allowStyleTagWithoutNonce : false;
