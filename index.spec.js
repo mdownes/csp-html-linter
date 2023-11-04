@@ -56,7 +56,6 @@ describe('cspHtmlLinter', () => {
     const code = inputHTML;
 
     const violations = cspHtmlLinter.parse(code);
-
     const expectedErrorMessage = `${selectors['[style]']}
 ${selectors['style:not([nonce])']}
 ${selectors['script:not([nonce])']}
@@ -214,6 +213,30 @@ ${selectors['[onafterprint]']}`;
 
     expect(violations.length).to.equal(0);
   });
+
+  it('should return correct structure when includeLocationInfo is set', async () => {
+    const inputHTML = `
+      <html>
+        <head>
+
+        </head>
+        <body>
+          <script src="https://www.someurl.com"></script>
+
+        </body>
+      </html>
+    `;
+
+    const options = {
+      includeLocationInfo: true
+    };
+    const code = inputHTML;
+    const violations = cspHtmlLinter.parse(code, options);
+
+    expect(violations.length).to.equal(1);
+    expect(violations[0].message).to.equal('You must add a nonce to a script tag');
+    expect(violations[0].location.startLine).to.equal(7);
+  })
 
   it('should not throw an error for valid HTML', async () => {
     const validHTML = `

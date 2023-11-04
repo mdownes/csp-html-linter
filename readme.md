@@ -28,6 +28,9 @@ const cspHtmlLinter = require('csp-html-linter');
 const violations = cspHtmlLinter.parse(code);
 
 ```
+Returns an array of violation messages in the form :   
+```['violation message 1', 'violations message 2']```  
+
 ### Advanced Usage 
 
 Import the plugin and call parse() passing the code and the options.  
@@ -37,15 +40,30 @@ By default all options are defaulted to false.
 const cspHtmlLinter = require('csp-html-linter');
 
 const options = {
-    allowInlineStyles:true,
-    allowInlineJs:true,
-    allowStyleTagWithoutNonce:true,
-    allowScriptTagWithoutNonce:true
+    allowInlineStyles: true,
+    allowInlineJs: true,
+    allowStyleTagWithoutNonce: true,
+    allowScriptTagWithoutNonce: true,
+    includeLocationInfo: true
 };
 
 const violations = cspHtmlLinter.parse(code, options);
-```
 
+```
+if includeLocationInfo is set, returns an object in the form :   
+```json
+{ 
+    message:'',  
+    location: {
+      startLine,
+      startCol,
+      startOffset,
+      endLine,
+      endCol,
+      endOffset
+    } 
+}
+```
 
 The configuration above will allow the following:
 
@@ -87,3 +105,22 @@ Indicates if style tags should require a nonce. Defaults to false.
 Type: Boolean : Optional
 
 Indicates if script tags should require a nonce. Defaults to false.  
+
+#### includeLocationInfo
+Type Boolean : optional
+
+Indicates if location info should be returned.
+When set, the returned object is no longer an array of messages but a format similar to the following:  
+```json
+{
+    message: 'You must not use the inline Javascript event: onclick',
+    location: {
+      startLine,
+      startCol,
+      startOffset,
+      endLine,
+      endCol,
+      endOffset,
+    }
+  }
+  ```
