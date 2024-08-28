@@ -16,7 +16,7 @@ By default it throws errors if it finds any usage of:
 
 Using npm:
 
-```npm install csp-html-lint --save-dev```
+```npm install csp-html-linter --save-dev```
 
 ### Basic Usage
 
@@ -30,6 +30,19 @@ const violations = cspHtmlLinter.parse(code);
 ```
 Returns an array of violation messages in the form :   
 ```['violation message 1', 'violations message 2']```  
+
+
+### Package.json Usage
+
+Import the plugin and call **csp-html-linter** passing it an **include** argument containing a glob to tell it where to find the html files. You can also pass any of the other options.
+
+```json
+{
+ "scripts": {
+    "lint:csp":"csp-html-linter --include ./src/**/*.html --allowInlineStyles"
+ }, 
+}
+```
 
 ### Advanced Usage 
 
