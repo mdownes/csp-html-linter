@@ -60,7 +60,8 @@ function getSelectors(options) {
 
 let violations = [];
 const argv = yargs.argv;
-const globPattern = argv.include;
+const includePattern = argv.include;
+const excludePattern = argv.exclude ? argv.exclude : 'node_modules/**';
 
 let options = {
   allowInlineStyles: false,
@@ -81,7 +82,7 @@ if (argv.allowScriptTagWithoutNonce) {
   options.allowScriptTagWithoutNonce = true
 }
 
-const files = globSync(globPattern, { ignore: 'node_modules/**' })
+const files = globSync(includePattern, { ignore: excludePattern })
 files.forEach(file => {
   const code = fs.readFileSync(file, 'utf-8');
   const result = parse(code, options);
