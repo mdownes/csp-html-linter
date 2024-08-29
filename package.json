@@ -1,6 +1,6 @@
 {
   "name": "csp-html-linter",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Lint your HTML for Content Security Policy Violations.",
   "main": "index.js",
   "keywords": [
@@ -31,7 +31,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "glob": "^11.0.0",
+    "glob": "^10.4.1",
     "jsdom": "^22.1.0"
   },
   "devDependencies": {
