@@ -62,6 +62,7 @@ let violations = [];
 const argv = yargs.argv;
 const includePattern = argv.include;
 const excludePattern = argv.exclude ? argv.exclude : 'node_modules/**';
+const isVerbose = argv.verbose ? true : false;
 
 let options = {
   allowInlineStyles: false,
@@ -83,7 +84,14 @@ if (argv.allowScriptTagWithoutNonce) {
 }
 
 const files = globSync(includePattern, { ignore: excludePattern })
+if (isVerbose) {
+  console.log("Pattern used = " + includePattern);
+  console.log("File count=" + files.length);
+}
 files.forEach(file => {
+  if (isVerbose) {
+    console.log(file);
+  }
   const code = fs.readFileSync(file, 'utf-8');
   const result = parse(code, options);
   if (result.length > 0) {
