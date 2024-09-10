@@ -58,60 +58,64 @@ function getSelectors(options) {
   return selectors;
 }
 
-let violations = [];
 const argv = yargs.argv;
-const includePattern = argv.include;
-const excludePattern = argv.exclude ? argv.exclude : 'node_modules/**';
-const isVerbose = argv.verbose ? true : false;
 
-let options = {
-  allowInlineStyles: false,
-  allowInlineJs: false,
-  allowStyleTagWithoutNonce: false,
-  allowScriptTagWithoutNonce: false
-};
-if (argv.allowInlineStyles) {
-  options.allowInlineStyles = true
-}
-if (argv.allowInlineJs) {
-  options.allowInlineJs = true
-}
-if (argv.allowStyleTagWithoutNonce) {
-  options.allowStyleTagWithoutNonce = true
-}
-if (argv.allowScriptTagWithoutNonce) {
-  options.allowScriptTagWithoutNonce = true
-}
+if (argv.include) {
 
-const files = globSync(includePattern, { ignore: excludePattern })
-if (isVerbose) {
-  console.log("Pattern used = " + includePattern);
-  console.log("File count=" + files.length);
-}
-files.forEach(file => {
+  let violations = [];
+
+  const includePattern = argv.include;
+  const excludePattern = argv.exclude ? argv.exclude : 'node_modules/**';
+  const isVerbose = argv.verbose ? true : false;
+
+  let options = {
+    allowInlineStyles: false,
+    allowInlineJs: false,
+    allowStyleTagWithoutNonce: false,
+    allowScriptTagWithoutNonce: false
+  };
+  if (argv.allowInlineStyles) {
+    options.allowInlineStyles = true
+  }
+  if (argv.allowInlineJs) {
+    options.allowInlineJs = true
+  }
+  if (argv.allowStyleTagWithoutNonce) {
+    options.allowStyleTagWithoutNonce = true
+  }
+  if (argv.allowScriptTagWithoutNonce) {
+    options.allowScriptTagWithoutNonce = true
+  }
+
+  const files = globSync(includePattern, { ignore: excludePattern })
   if (isVerbose) {
-    console.log(file);
+    console.log("Pattern used = " + includePattern);
+    console.log("File count=" + files.length);
   }
-  const code = fs.readFileSync(file, 'utf-8');
-  const result = parse(code, options);
-  if (result.length > 0) {
-    violations = violations.concat(mapViolations(result, file));
-  }
-});
-
-if (Array.isArray(violations) && violations.length > 0) {
-  let result = (violations.map(v => `${v.violation}\n${v.file}`)).join('\n');
-  console.error(chalk.red(`CSP Violations were found. \n${result}`));
-}
-
-function mapViolations(messages, id) {
-  let result = [];
-  messages.forEach((v) => {
-    result.push({ file: id, violation: v });
+  files.forEach(file => {
+    if (isVerbose) {
+      console.log(file);
+    }
+    const code = fs.readFileSync(file, 'utf-8');
+    const result = parse(code, options);
+    if (result.length > 0) {
+      violations = violations.concat(mapViolations(result, file));
+    }
   });
 
-  return result;
+  if (Array.isArray(violations) && violations.length > 0) {
+    let result = (violations.map(v => `${v.violation}\n${v.file}`)).join('\n');
+    console.error(chalk.red(`CSP Violations were found. \n${result}`));
+  }
+
+  function mapViolations(messages, id) {
+    let result = [];
+    messages.forEach((v) => {
+      result.push({ file: id, violation: v });
+    });
+
+    return result;
+  }
+
 }
-
-
 module.exports = { parse };
