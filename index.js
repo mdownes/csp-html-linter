@@ -99,18 +99,18 @@ files.forEach(file => {
   }
 });
 
-if (violations.length > 0) {
+if (Array.isArray(violations) && violations.length > 0) {
   let result = (violations.map(v => `${v.violation}\n${v.file}`)).join('\n');
   console.error(chalk.red(`CSP Violations were found. \n${result}`));
 }
 
 function mapViolations(messages, id) {
-  let violations = [];
+  let result = [];
   messages.forEach((v) => {
-    violations.push({ file: id, violation: v });
+    result.push({ file: id, violation: v });
   });
 
-  return violations;
+  return result;
 }
 
 
